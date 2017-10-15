@@ -33,7 +33,7 @@ FindPetEndpoint fetches a Pet object with matching ID from DB
 */
 func FindPetEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	pet, err := dao.FindById(params["id"])
+	pet, err := dao.FindByID(params["id"])
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid Pet ID")
 		return
