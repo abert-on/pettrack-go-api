@@ -8,6 +8,7 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
+	. "github.com/abert-on/pettrack-go-api/dao"
 	. "github.com/abert-on/pettrack-go-api/models"
 	"github.com/gorilla/mux"
 )
