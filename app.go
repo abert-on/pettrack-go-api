@@ -8,7 +8,7 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	. "github.com/abert-on/pets-restapi/models"
+	. "github.com/abert-on/pettrack-go-api/models"
 	"github.com/gorilla/mux"
 )
 

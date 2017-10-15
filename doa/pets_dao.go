@@ -3,7 +3,7 @@ package dao
 import (
 	"log"
 
-	. "github.com/abert-on/pets-restapi/models"
+	. "github.com/abert-on/pettrack-go-api/models"
 
 	"gopkg.in/mgo.v2/bson"
 
