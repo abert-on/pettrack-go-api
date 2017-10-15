@@ -3,7 +3,7 @@ package dao
 import (
 	"log"
 
-	. "github.com/abert-on/pettrack-go-api/models"
+	models "github.com/abert-on/pettrack-go-api/models"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -33,33 +33,33 @@ func (p *PetsDAO) Connect() {
 }
 
 // FindAll gets a list of all pets
-func (p *PetsDAO) FindAll() ([]Pet, error) {
-	var pets []Pet
+func (p *PetsDAO) FindAll() ([]models.Pet, error) {
+	var pets []models.Pet
 	err := db.C(COLLECTION).Find(bson.M{}).All(&pets)
 	return pets, err
 }
 
-// FindById finds a pet by ID
-func (p *PetsDAO) FindById(id string) (Pet, error) {
-	var pet Pet
+// FindByID finds a pet by ID
+func (p *PetsDAO) FindByID(id string) (models.Pet, error) {
+	var pet models.Pet
 	err := db.C(COLLECTION).FindId(bson.ObjectIdHex(id)).One(&pet)
 	return pet, err
 }
 
 // Insert inserts a pet into the DB
-func (p *PetsDAO) Insert(pet Pet) error {
+func (p *PetsDAO) Insert(pet models.Pet) error {
 	err := db.C(COLLECTION).Insert(&pet)
 	return err
 }
 
 // Delete deletes an existing pet
-func (p *PetsDAO) Delete(pet Pet) error {
+func (p *PetsDAO) Delete(pet models.Pet) error {
 	err := db.C(COLLECTION).Remove(&pet)
 	return err
 }
 
 // Update updates an existing pet
-func (p *PetsDAO) Update(pet Pet) error {
+func (p *PetsDAO) Update(pet models.Pet) error {
 	err := db.C(COLLECTION).UpdateId(pet.ID, &pet)
 	return err
 }

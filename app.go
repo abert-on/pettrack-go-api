@@ -7,14 +7,14 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	. "github.com/abert-on/pettrack-go-api/config"
-	. "github.com/abert-on/pettrack-go-api/dao"
-	. "github.com/abert-on/pettrack-go-api/models"
+	C "github.com/abert-on/pettrack-go-api/config"
+	D "github.com/abert-on/pettrack-go-api/dao"
+	M "github.com/abert-on/pettrack-go-api/models"
 	"github.com/gorilla/mux"
 )
 
-var config = Config{}
-var dao = PetsDAO{}
+var config = C.Config{}
+var dao = D.PetsDAO{}
 
 /*
 AllPetsEndpoint fetches all Pet objects from DB
@@ -25,7 +25,7 @@ func AllPetsEndpoint(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJson(w, http.StatusOK, pets)
+	respondWithJSON(w, http.StatusOK, pets)
 }
 
 /*
@@ -38,7 +38,7 @@ func FindPetEndpoint(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, "Invalid Pet ID")
 		return
 	}
-	respondWithJson(w, http.StatusOK, pet)
+	respondWithJSON(w, http.StatusOK, pet)
 }
 
 /*
@@ -46,7 +46,7 @@ CreatePetEndpoint creates a Pet entry in DB
 */
 func CreatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var pet Pet
+	var pet M.Pet
 	if err := json.NewDecoder(r.Body).Decode(&pet); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -55,7 +55,7 @@ func CreatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 	if err := dao.Insert(pet); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 	}
-	respondWithJson(w, http.StatusCreated, pet)
+	respondWithJSON(w, http.StatusCreated, pet)
 }
 
 /*
@@ -63,7 +63,7 @@ UpdatePetEndpoint updates an existng Pet entry in DB
 */
 func UpdatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var pet Pet
+	var pet M.Pet
 	if err := json.NewDecoder(r.Body).Decode(&pet); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -72,7 +72,7 @@ func UpdatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
+	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
 /*
@@ -80,7 +80,7 @@ DeletePetEndpoint deletes a pet entry from DB
 */
 func DeletePetEndpoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var pet Pet
+	var pet M.Pet
 	if err := json.NewDecoder(r.Body).Decode(&pet); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -89,14 +89,14 @@ func DeletePetEndpoint(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
+	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
 func respondWithError(w http.ResponseWriter, code int, msg string) {
-	respondWithJson(w, code, map[string]string{"error": msg})
+	respondWithJSON(w, code, map[string]string{"error": msg})
 }
 
-func respondWithJson(w http.ResponseWriter, code int, payload interface{}) {
+func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	response, _ := json.Marshal(payload)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
