@@ -6,7 +6,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-// Represents database server
+// Config represents database server
 type Config struct {
 	Server   string
 	Database string

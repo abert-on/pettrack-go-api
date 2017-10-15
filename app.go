@@ -59,7 +59,7 @@ func CreatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 /*
-UpdatePetEndpoint updates an exisitng Pet entry in DB
+UpdatePetEndpoint updates an existng Pet entry in DB
 */
 func UpdatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
