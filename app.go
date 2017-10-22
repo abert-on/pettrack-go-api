@@ -2,10 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
-	"net/http/httputil"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -38,7 +36,7 @@ func FindPetEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	pet, err := dao.FindByID(params["id"])
 	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid Pet ID")
+		respondWithJSON(w, http.StatusOK, nil)
 		return
 	}
 	respondWithJSON(w, http.StatusOK, pet)
@@ -49,11 +47,6 @@ CreatePetEndpoint creates a Pet entry in DB
 */
 func CreatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	requestDump, err := httputil.DumpRequest(r, true)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(string(requestDump))
 	var pet M.Pet
 	if err := json.NewDecoder(r.Body).Decode(&pet); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
@@ -123,11 +116,11 @@ func init() {
 // Define HTTP request routes
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/pets", AllPetsEndpoint).Methods("GET")
+	r.HandleFunc("/pets/{userId}", AllPetsEndpoint).Methods("GET")
 	r.HandleFunc("/pets", CreatePetEndpoint).Methods("POST")
 	r.HandleFunc("/pets", UpdatePetEndpoint).Methods("PUT")
 	r.HandleFunc("/pets", DeletePetEndpoint).Methods("DELETE")
-	r.HandleFunc("/pets/{id}", FindPetEndpoint).Methods("GET")
+	r.HandleFunc("/pet/{id}", FindPetEndpoint).Methods("GET")
 	if err := http.ListenAndServe(":3000", r); err != nil {
 		log.Fatal(err)
 	}
