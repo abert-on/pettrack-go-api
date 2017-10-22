@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -47,6 +49,11 @@ CreatePetEndpoint creates a Pet entry in DB
 */
 func CreatePetEndpoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
+	requestDump, err := httputil.DumpRequest(r, true)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(requestDump))
 	var pet M.Pet
 	if err := json.NewDecoder(r.Body).Decode(&pet); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
