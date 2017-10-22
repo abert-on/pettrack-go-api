@@ -35,7 +35,7 @@ func (p *PetsDAO) Connect() {
 // FindAllByUserID gets a list of all pets for a user
 func (p *PetsDAO) FindAllByUserID(userID string) ([]models.Pet, error) {
 	var pets []models.Pet
-	err := db.C(COLLECTION).Find(bson.M{"$eq": bson.M{"userId": userID}}).All(&pets)
+	err := db.C(COLLECTION).Find(bson.M{"$match": bson.M{"userId": userID}}).All(&pets)
 	return pets, err
 }
 
