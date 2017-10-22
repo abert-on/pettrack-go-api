@@ -20,7 +20,8 @@ var dao = D.PetsDAO{}
 AllPetsEndpoint fetches all Pet objects from DB
 */
 func AllPetsEndpoint(w http.ResponseWriter, r *http.Request) {
-	pets, err := dao.FindAll()
+	params := mux.Vars(r)
+	pets, err := dao.FindAllByUserID(params["userId"])
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return

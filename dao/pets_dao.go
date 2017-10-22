@@ -32,10 +32,10 @@ func (p *PetsDAO) Connect() {
 	db = session.DB(p.Database)
 }
 
-// FindAll gets a list of all pets
-func (p *PetsDAO) FindAll() ([]models.Pet, error) {
+// FindAllByUserID gets a list of all pets for a user
+func (p *PetsDAO) FindAllByUserID(userID string) ([]models.Pet, error) {
 	var pets []models.Pet
-	err := db.C(COLLECTION).Find(bson.M{}).All(&pets)
+	err := db.C(COLLECTION).Find(bson.M{"userId": userID}).All(&pets)
 	return pets, err
 }
 
