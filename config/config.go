@@ -1,8 +1,6 @@
 package config
 
 import (
-	"log"
-
 	"github.com/BurntSushi/toml"
 )
 
@@ -13,8 +11,7 @@ type Config struct {
 }
 
 // Read and parse a configuration file "config.toml"
-func (c *Config) Read() {
-	if _, err := toml.DecodeFile("config.toml", &c); err != nil {
-		log.Fatal(err)
-	}
+func (c *Config) Read(filename string) error {
+	_, err := toml.DecodeFile(filename, &c)
+	return err
 }

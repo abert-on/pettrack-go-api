@@ -106,7 +106,11 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 // Parse the config file 'config.toml' and establish a connection to DB
 func init() {
-	config.Read()
+	err := config.Read("config.toml")
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	dao.Server = config.Server
 	dao.Database = config.Database
