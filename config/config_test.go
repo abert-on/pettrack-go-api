@@ -18,6 +18,7 @@ func TestRead(t *testing.T) {
 		t.Errorf("Incorrect server. Expected: %s, actual: %s", "testserver1", config.Server)
 	}
 }
+
 func TestReadError(t *testing.T) {
 	config := Config{}
 	err := config.Read("no_such_config.toml")
